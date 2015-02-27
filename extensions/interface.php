@@ -36,16 +36,16 @@ if ( ! function_exists( 'customizer_library_register' ) ) : /**
 			customizer_library_add_panels( $options['panels'], $wp_customize );
 		}
 
-		// Set blank description if one isn't set
-		if ( ! isset( $option['description'] ) ) {
-			$option['description'] = '';
-		}
-
 		// Sets the priority for each control added
 		$loop = 0;
 
 		// Loops through each of the options
 		foreach ( $options as $option ) {
+
+			// Set blank description if one isn't set
+			if ( ! isset( $option['description'] ) ) {
+				$option['description'] = '';
+			}
 
 			if ( isset( $option['type'] ) ) {
 
@@ -69,17 +69,16 @@ if ( ! function_exists( 'customizer_library_register' ) ) : /**
 					$option['priority'] = $loop;
 				}
 
-				if ( ! isset( $option['description'] ) ) {
-					$option['description'] = '';
-				}
-
 				// Adds control based on control type
 				switch ( $option['type'] ) {
 
 					case 'text':
+					case 'url':
 					case 'select':
 					case 'radio':
 					case 'checkbox':
+					case 'range':
+					case 'dropdown-pages':
 
 						$wp_customize->add_control(
 							$option['id'], $option
@@ -108,7 +107,7 @@ if ( ! function_exists( 'customizer_library_register' ) ) : /**
 									'sanitize_callback' => $option['sanitize_callback'],
 									'priority'          => $option['priority'],
 									'active_callback'   => $option['active_callback'],
-									'description'       => $option['description']
+									'description'      => $option['description']
 								)
 							)
 						);
@@ -126,7 +125,7 @@ if ( ! function_exists( 'customizer_library_register' ) ) : /**
 									'sanitize_callback' => $option['sanitize_callback'],
 									'priority'          => $option['priority'],
 									'active_callback'   => $option['active_callback'],
-									'description'       => $option['description']
+									'description'      => $option['description']
 								)
 							)
 						);
@@ -278,6 +277,18 @@ function customizer_library_get_sanitization( $type ) {
 
 	if ( 'text' == $type || 'textarea' == $type ) {
 		return 'customizer_library_sanitize_text';
+	}
+
+	if ( 'url' == $type ) {
+		return 'esc_url';
+	}
+
+	if ( 'range' == $type ) {
+		return 'customizer_library_sanitize_range';
+	}
+
+	if ( 'dropdown-pages' == $type ) {
+		return 'absint';
 	}
 
 	// If a custom option is being used, return false

@@ -69,6 +69,10 @@ if ( ! function_exists( 'customizer_library_register' ) ) : /**
 					$option['priority'] = $loop;
 				}
 
+				if ( ! isset( $option['description'] ) ) {
+					$option['description'] = '';
+				}
+
 				// Adds control based on control type
 				switch ( $option['type'] ) {
 
@@ -104,7 +108,7 @@ if ( ! function_exists( 'customizer_library_register' ) ) : /**
 									'sanitize_callback' => $option['sanitize_callback'],
 									'priority'          => $option['priority'],
 									'active_callback'   => $option['active_callback'],
-									'descpription'      => $option['description']
+									'description'       => $option['description']
 								)
 							)
 						);
@@ -122,7 +126,7 @@ if ( ! function_exists( 'customizer_library_register' ) ) : /**
 									'sanitize_callback' => $option['sanitize_callback'],
 									'priority'          => $option['priority'],
 									'active_callback'   => $option['active_callback'],
-									'descpription'      => $option['description']
+									'description'       => $option['description']
 								)
 							)
 						);
